@@ -4,31 +4,31 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './uploads/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
-  }
+    destination: function (req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
 });
 
 const fileFilter = (req, file, cb) => {
-  // reject a file
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
+    // reject a file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
 };
 
 const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5
-  },
-  fileFilter: fileFilter
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
 });
- 
+
 var model;
 
 class GaleriaController{
@@ -47,12 +47,22 @@ class GaleriaController{
         res.json (await model.find({}));
     }
     async create(req, res){
+      try{
         let galeria = req.body;
-        res.json (await model.create(galeria));
-        console.log(galeria);
+        galeria.foto = req.file.path;
+        const gal = await model.create(galeria);
+        res.status(201).send({message: "Galeria cadastrado com sucesso",gal});
+      }catch (e) {
+        console.log(e);
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
+        });
+    }
+
     }
     async update(req, res){
         let galeria = req.body;
+       
         res.json (await model.findOneAndUpdate({_id:galeria._id}, galeria));
     }
     async remove(req, res){

@@ -14,8 +14,16 @@ class Server {
         //instranciando a Express
         this.app = new Express();
 
-        this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use(bodyParser.json({
+            type: 'application/*+json' ,
+            limit: '5mb'
+        }));
+        this.app.use(bodyParser.urlencoded({
+            extended: false
+        }));
+        
+
+        this.app.use(Express.static('./uploads'))
 
              
         //conectar com banco
