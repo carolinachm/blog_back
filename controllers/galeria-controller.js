@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 
 const storage = multer.diskStorage({
@@ -22,52 +23,43 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 5
-    },
-    fileFilter: fileFilter
-});
+
 
 var model;
 
-class GaleriaController {
+class GaleriaController{
 
-    constructor(app) {
+    constructor(app){
 
         app.get('/galerias', this.findAll);
-        app.post('/galerias', upload.single('foto'), this.create);
-        app.put('/galerias/:_id', this.update);
-        app.delete('/galerias/:_id', this.delete);
-
+        app.post('/galerias', upload.single('foto'),this.create);
+        app.put('/galerias', this.update);
+        app.delete('/galerias', this.delete);
+        
         model = mongoose.model('Galeria');
 
-
     }
-    async findAll(req, res) {
+    async findAll(req,res){
         res.json(await model.find({}));
     }
-    async create(req, res) {
+    async create(req, res){
+      try{
         let galeria = req.body;
         galeria.foto = req.file.path;
-        try {
-            const gal = await model.create(galeria);
-            res.status(201).send({ message: "Galeria cadastrado com sucesso", gal });
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                message: 'Falha ao processar sua requisição'
-            });
-        }
-
-
+        const gal = await model.create(galeria);
+        res.status(201).send({message: "Galeria cadastrado com sucesso",gal});
+      }catch (e) {
+        console.log(e);
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
+        });
+    }
 
     }
-    async update(req, res) {
-        try {
-            await model.update(req.params.id, req.body);
-            res.status(200).send({
+    async update(req, res){
+        try{
+             await model.update(req.params.id, {$set: req.body});
+             res.status(200).send({
                 message: 'Galeria atualizado com sucesso!'
             });
         } catch (e) {
@@ -75,11 +67,12 @@ class GaleriaController {
                 message: 'Falha ao processar sua requisição'
             });
         }
-
+       
     }
-    async delete(req, res) {
+
+    async delete(req, res){
         try {
-            await model.delete(req.body.id)
+            await model.remove(req.body.id)
             res.status(200).send({
                 message: 'Galeria removido com sucesso!'
             });
@@ -88,7 +81,6 @@ class GaleriaController {
                 message: 'Falha ao processar sua requisição'
             });
         }
-
     }
 }
 module.exports = GaleriaController;
