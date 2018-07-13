@@ -32,16 +32,16 @@ const upload = multer({
 
 var model;
 
-class GaleriaController {
+class BlogController {
 
     constructor(app) {
 
-        app.get('/galerias', this.findAll);
-        app.post('/galerias', upload.single('foto'), this.create);
-        app.put('/galerias/:_id', this.update);
-        app.delete('/galerias/:_id', this.delete);
+        app.get('/blogs', this.findAll);
+        app.post('/blogs', upload.single('foto'), this.create);
+        app.put('/blogs', this.update);
+        app.delete('/blogs', this.delete);
 
-        model = mongoose.model('Galeria');
+        model = mongoose.model('Blog');
 
 
     }
@@ -49,11 +49,11 @@ class GaleriaController {
         res.json(await model.find({}));
     }
     async create(req, res) {
-        let galeria = req.body;
-        galeria.foto = req.file.path;
+        let blog = req.body;
+        blog.foto = req.file.path;
         try {
-            const gal = await model.create(galeria);
-            res.status(201).send({ message: "Galeria cadastrado com sucesso", gal });
+            const blo = await model.create(blog);
+            res.status(201).send({ message: "Blog cadastrado com sucesso", blo });
         } catch (e) {
             console.log(e);
             res.status(500).send({
@@ -68,7 +68,7 @@ class GaleriaController {
         try {
             await model.update(req.params.id, req.body);
             res.status(200).send({
-                message: 'Galeria atualizado com sucesso!'
+                message: 'blog atualizado com sucesso!'
             });
         } catch (e) {
             res.status(500).send({
@@ -81,7 +81,7 @@ class GaleriaController {
         try {
             await model.delete(req.body.id)
             res.status(200).send({
-                message: 'Galeria removido com sucesso!'
+                message: 'blog removido com sucesso!'
             });
         } catch (e) {
             res.status(500).send({
@@ -91,4 +91,4 @@ class GaleriaController {
 
     }
 }
-module.exports = GaleriaController;
+module.exports = BlogController;
