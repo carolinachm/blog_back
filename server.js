@@ -1,8 +1,12 @@
 'use strict';
 const Express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
+// Configuring the database
+const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 //importacao das controllers
 const BlogController = require('./controllers/blog-controller')
 const AutorController = require('./controllers/autor-controller')
@@ -37,12 +41,18 @@ class Server {
             next();
         });
         
-
         this.app.use(Express.static('./uploads'))
 
-             
-        //conectar com banco
-        mongoose.connect('mongodb://mongo:mongo12@ds151530.mlab.com:51530/db_blog');
+
+
+        // Connecting to the database
+        mongoose.connect(dbConfig.url)
+            .then(() => {
+                console.log("Successfully connected to the database");
+            }).catch(err => {
+                console.log('Could not connect to the database. Exiting now...');
+                process.exit();
+            });
 
         //instanciando a model
         new Blog();
