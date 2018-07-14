@@ -43,58 +43,32 @@ class BlogController {
         app.get('/blogs', this.findAll);
         app.post('/blogs', upload.single('foto'), this.create);
         app.put('/blogs', this.update);
-        app.delete('/blogs', this.delete);
+        app.delete('/blogs', this.remove);
 
         model = mongoose.model('Blog');
 
 
     }
-    async findAll(req,res){
-        res.json(await model.find({}));
+    async findAll(req, res){
+        res.json(await model.find());
     }
 
-    async create(req, res) {
+    async create(req, res){
+        console.log(req.body);
         let blog = req.body;
         blog.foto = req.file.path;
-        try {
-            const blo = await model.create(blog);
-            res.status(201).send({ message: "Blog cadastrado com sucesso", blo });
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                message: 'Falha ao processar sua requisição'
-            });
-        }
-
-
-
-    }
-    async update(req, res) {
-        try {
-            await model.update(req.params.id, req.body);
-            res.status(200).send({
-                message: 'blog atualizado com sucesso!'
-
-            });
-        } catch (e) {
-            res.status(500).send({
-                message: 'Falha ao processar sua requisição'
-            });
-        }
-       
+        res.json(await model.create(blog));
     }
 
-    async delete(req, res){
-        try {
-            await model.remove(req.body.id)
-            res.status(200).send({
-                message: 'blog removido com sucesso!'
-            });
-        } catch (e) {
-            res.status(500).send({
-                message: 'Falha ao processar sua requisição'
-            });
-        }
+    async update(req, res){
+        let blog = req.body;
+        res.json(await model.update({_id: blog._id}, blog));
+    }
+
+    async remove(req, res){
+        console.log("Deletando o blog...");
+        let id = req.body._id;
+        res.json(await model.remove({_id: id}));
     }
 }
 module.exports = BlogController;

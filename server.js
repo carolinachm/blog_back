@@ -55,10 +55,10 @@ class Server {
             });
 
         //instanciando a model
-        new Blog();
-        new Autor();
-        new Post();
-        new Tag();
+        new Blog()
+        new Autor()
+        new Post()
+        new Tag()
         //instanciando a Controller
         this.blogController = new BlogController(this.app);
         this.autorController = new AutorController(this.app);

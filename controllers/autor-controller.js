@@ -10,55 +10,31 @@ class AutorController {
         app.get('/autores', this.findAll);
         app.post('/autores',  this.create);
         app.put('/autores/:_id', this.update);
-        app.delete('/autores/:_id', this.delete);
+        app.delete('/autores/:_id', this.remove);
 
         model = mongoose.model('Autor');
 
 
     }
-    async findAll(req, res) {
-        res.json(await model.find({}));
+    async findAll(req, res){
+        res.json(await model.find());
     }
-    async create(req, res) {
+
+    async create(req, res){
+        console.log(req.body);
         let autor = req.body;
-        try {
-            const au = await model.create(autor);
-            res.status(201).send({ message: "autor cadastrado com sucesso", au });
-        } catch (e) {
-            console.log(e);
-            res.status(500).send({
-                message: 'Falha ao processar sua requisição'
-            });
-        }
-
-
-
+        res.json(await model.create(autor));
     }
-    async update(req, res) {
-        try {
-            await model.update(req.params.id, req.body);
-            res.status(200).send({
-                message: 'autor atualizado com sucesso!'
-            });
-        } catch (e) {
-            res.status(500).send({
-                message: 'Falha ao processar sua requisição'
-            });
-        }
 
+    async update(req, res){
+        let autor = req.body;
+        res.json(await model.update({_id: autor._id}, autor));
     }
-    async delete(req, res) {
-        try {
-            await model.delete(req.body.id)
-            res.status(200).send({
-                message: 'autor removido com sucesso!'
-            });
-        } catch (e) {
-            res.status(500).send({
-                message: 'Falha ao processar sua requisição'
-            });
-        }
 
+    async remove(req, res){
+        console.log("Deletando o autor...");
+        let id = req.body._id;
+        res.json(await model.remove({_id: id}));
     }
 }
 module.exports = AutorController;
