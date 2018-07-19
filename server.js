@@ -1,16 +1,21 @@
 'use strict';
 const Express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
+
 
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 //importacao das controllers
-const GaleriaController = require('./controllers/galeria-controller')
+
+const PostController = require('./controllers/post-controller')
+const AutorController = require('./controllers/autor-controller')
+const SiteController = require('./controllers/site-controller')
 //importacao das model
-const Galeria = require('./models/galeria')
+const Post = require('./models/post')
+const Autor = require('./models/autor')
+const Site = require('./models/site')
 
 class Server {
 
@@ -31,6 +36,20 @@ class Server {
 
 
 
+        this.app.use((req, res, next) => {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header(
+                "Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+            );
+            if (req.method === "OPTIONS") {
+                res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+                return res.status(200).json({});
+            }
+            next();
+        });
+
+
         // Connecting to the database
         mongoose.connect(dbConfig.url)
             .then(() => {
@@ -41,9 +60,14 @@ class Server {
             });
 
         //instanciando a model
-        new Galeria();
+        new Post
+        new Autor
+        new Site
         //instanciando a Controller
-        this.galeriaController = new GaleriaController(this.app);
+       
+        this.postController = new PostController(this.app);
+        this.autorController = new AutorController(this.app);
+        this.siteController = new SiteController(this.app);
 
         this.app.listen(3000, () => {
             console.log('Example app listening on port 3000!');
