@@ -19,6 +19,8 @@ const PostController = require('./controllers/post-controller')
 const AutorController = require('./controllers/autor-controller')
 const SiteController = require('./controllers/site-controller')
 
+const PostRoute = require('./routes/post-route')
+
 
 class Server {
 
@@ -65,9 +67,9 @@ class Server {
         new Site()
         //instanciando a Controller
        
-        this.postController = new PostController(this.app);
-        this.autorController = new AutorController(this.app);
-        this.siteController = new SiteController(this.app);
+        this.postRoute = new PostRoute(this.app);
+        this.autorRoute = new AutorPoute(this.app);
+        this.siteRoute = new SiteRoute(this.app);
 
         this.app.listen(3000, () => {
             console.log('Example app listening on port 3000!');

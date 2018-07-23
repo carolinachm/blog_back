@@ -1,8 +1,8 @@
 'use strict'
-
-const mongoose = require('mongoose');
+const dataRepository = require('../repositories/post-repository')
 const multer = require('multer');
- const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
+
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -22,37 +22,29 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// const upload = multer({
-//     storage: storage,
-//     limits: {
-//       fileSize: 1024 * 1024 * 5
-//     },
-//     fileFilter: fileFilter
-//   });
+const upload = multer({
+    storage: storage,
+    limits: {
+      fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+  });
 
 
 
-var model;
+var repository;
 
 class PostController{
 
-    constructor(app){
-
-        app.get('/posts', this.findAll);
-        // app.get('/posts/:_id', this.findById);
-        app.post('/posts', upload.single('foto'),this.create);
-        app.put('/posts', this.update);
-        app.delete('/posts', this.delete);
-        
-        model = mongoose.model('Post');
-        model = mongoose.model('Site');
-        model = mongoose.model('Autor');
-
+    constructor(mongoose){
+      
+        repository = new PostRepository(mongoose)
+      
     }
     async findAll(req,res){
         try {
-            const post = await model.find({})
-            res.status(201).json({post});
+            const data = await repository.find({})
+            res.status(201).json(data);
         } catch (e) {
             console.log(e);
             res.status(500).json({
@@ -60,37 +52,35 @@ class PostController{
             });
         }
     }
-    // async getById(req,res){
-    //     try {
-    //         const post = await model.findById(req.params.post._id);
-    //         res.status(201).json({post});
-    //     } catch (e) {
-    //         console.log(e);
-    //         res.status(500).json({
-    //             message: 'Falha ao processar sua requisição'
-    //         });
-    //     }
-    // }
+    async getById(req,res){
+        try {
+            const data = await repository.findById(req.params.id);
+            res.status(201).json(data);
+        } catch (e) {
+            console.log(e);
+            res.status(500).json({
+                message: 'Falha ao processar sua requisição'
+            });
+        }
+    }
     async create(req, res){
       try{
-        const post = await model.create(req.body);
-        post.foto = req.body.foto;
-         post.autor = req.body.autor;
-         post.site = req.body.site;
-        res.status(201).json({message: "post cadastrado com sucesso",post});
+        const data = await repository.create(req.body);
+        
+        res.status(201).json({message: "data cadastrado com sucesso",data});
         site.map(site =>{
-            const postSite = new Site({...site, post: post._id});
-            postSite.save().then(site=>{
-                post.site.push(site);
+            const dataSite = new Site({...site, data: data._id});
+            dataSite.save().then(site=>{
+                data.site.push(site);
             });
         })
         autor.map(autor =>{
-            const postAutor = new Autor({...autor, post: post._id});
+            const dataAutor = new Autor({...autor, data: data._id});
             posAautor.save().then(autor=>{
-                post.autor.push(autor);
+                data.autor.push(autor);
             });
         })
-        await post.save();
+        await data.save();
       }catch (e) {
         console.log(e);
         res.status(500).json({
@@ -101,9 +91,9 @@ class PostController{
     }
     async update(req, res){
         try{
-             await model.update(req.params.id, {$set: req.body});
+             await repository.update(req.params.id, req.body);
              res.status(200).json({
-                message: 'post atualizado com sucesso!'
+                message: 'data atualizado com sucesso!'
             });
         } catch (e) {
             res.status(500).json({
@@ -115,9 +105,9 @@ class PostController{
 
     async delete(req, res){
         try {
-            await model.findByIdAndRemove(req.params.id)
+            await repository.findByIdAndRemove(req.params.id)
             res.status(200).json({
-                message: 'post removido com sucesso!'
+                message: 'data removido com sucesso!'
             });
         } catch (e) {
             res.status(500).json({
