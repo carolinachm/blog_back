@@ -7,15 +7,18 @@ const bodyParser = require('body-parser');
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+
+//importacao das model
+const Post = require('./models/post')
+const Autor = require('./models/autor')
+const Site = require('./models/site')
+
 //importacao das controllers
 
 const PostController = require('./controllers/post-controller')
 const AutorController = require('./controllers/autor-controller')
 const SiteController = require('./controllers/site-controller')
-//importacao das model
-const Post = require('./models/post')
-const Autor = require('./models/autor')
-const Site = require('./models/site')
+
 
 class Server {
 
@@ -23,10 +26,7 @@ class Server {
         //instranciando a Express
         this.app = new Express();
 
-        this.app.use(bodyParser.json({
-            type: 'application/*+json',
-            limit: '5mb'
-        }));
+        this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({
             extended: false
         }));
@@ -60,9 +60,9 @@ class Server {
             });
 
         //instanciando a model
-        new Post
-        new Autor
-        new Site
+        new Post()
+        new Autor()
+        new Site()
         //instanciando a Controller
        
         this.postController = new PostController(this.app);

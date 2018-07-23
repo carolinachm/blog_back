@@ -52,10 +52,10 @@ class PostController{
     async findAll(req,res){
         try {
             const post = await model.find({})
-            res.status(201).send({post});
+            res.status(201).json({post});
         } catch (e) {
             console.log(e);
-            res.status(500).send({
+            res.status(500).json({
                 message: 'Falha ao processar sua requisição'
             });
         }
@@ -63,10 +63,10 @@ class PostController{
     // async getById(req,res){
     //     try {
     //         const post = await model.findById(req.params.post._id);
-    //         res.status(201).send({post});
+    //         res.status(201).json({post});
     //     } catch (e) {
     //         console.log(e);
-    //         res.status(500).send({
+    //         res.status(500).json({
     //             message: 'Falha ao processar sua requisição'
     //         });
     //     }
@@ -77,7 +77,7 @@ class PostController{
         post.foto = req.body.foto;
          post.autor = req.body.autor;
          post.site = req.body.site;
-        res.status(201).send({message: "post cadastrado com sucesso",post});
+        res.status(201).json({message: "post cadastrado com sucesso",post});
         site.map(site =>{
             const postSite = new Site({...site, post: post._id});
             postSite.save().then(site=>{
@@ -93,7 +93,7 @@ class PostController{
         await post.save();
       }catch (e) {
         console.log(e);
-        res.status(500).send({
+        res.status(500).json({
             message: 'Falha ao processar sua requisição'
         });
     }
@@ -102,11 +102,11 @@ class PostController{
     async update(req, res){
         try{
              await model.update(req.params.id, {$set: req.body});
-             res.status(200).send({
+             res.status(200).json({
                 message: 'post atualizado com sucesso!'
             });
         } catch (e) {
-            res.status(500).send({
+            res.status(500).json({
                 message: 'Falha ao processar sua requisição'
             });
         }
@@ -116,11 +116,11 @@ class PostController{
     async delete(req, res){
         try {
             await model.findByIdAndRemove(req.params.id)
-            res.status(200).send({
+            res.status(200).json({
                 message: 'post removido com sucesso!'
             });
         } catch (e) {
-            res.status(500).send({
+            res.status(500).json({
                 message: 'Falha ao processar sua requisição'
             });
         }
