@@ -1,5 +1,5 @@
 'use strict'
-const dataRepository = require('../repositories/post-repository')
+const PostRepository = require('../repositories/post-repository')
 const multer = require('multer');
 // const upload = multer({ dest: 'uploads/' });
 

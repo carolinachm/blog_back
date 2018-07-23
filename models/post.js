@@ -1,12 +1,12 @@
 'use strict'
 
-const mongoose = require('mongoose');
-
 
 class Post {
-    constructor() {
-        mongoose.model('Post', {
-            id: "",
+    constructor(mongoose) {
+
+        var Schema = mongoose.Schema;
+        
+        var PostSchema = new Schema({
             titulo: String,
             resumo: String,
             dataPublicacao: "",
@@ -14,16 +14,19 @@ class Post {
             cliques: "",
             foto: String,
             site: {
-                id: "",
-                nome: String,
-                url: String,
-                autor: {
-                    id: "",
-                    nome: String
-                }
+                type:mongoose.Schema.Types.ObjectId,
+                ref:'Site',
+                require: true
+            },
+            autor:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Autor',
+                require:true
             }
         })
+
+        mongoose.model('Post', PostSchema);
     }
 
 }
-module.exports =Post;
+module.exports = Post;

@@ -1,6 +1,7 @@
 'use strict'
 
 const PostController = require('../controllers/post-controller')
+
 class PostRoute{
 
     constructor(app){
