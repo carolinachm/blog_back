@@ -1,16 +1,18 @@
 'use strict'
 
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 class Site {
     constructor() {
-        mongoose.model('Site', {
+        const Site = new Schema({
            
                 id: "",
                 nome: String,
                 url: String,
                
         })
+        mongoose.model('Site', Site);
     }
 
 }

@@ -1,25 +1,19 @@
 'use strict'
 
-const mongoose = require('mongoose');
+const SiteRepository = require('../repositories/site-repository')
 
-var model;
+var repository;
 
 class SiteController{
 
-    constructor(app){
-
-        app.get('/sites', this.findAll);
-        // app.get('/sites/:_id', this.findById);
-        app.post('/sites', this.create);
-        app.put('/sites', this.update);
-        app.delete('/sites', this.delete);
-        
-        model = mongoose.model('Site');
-
+    constructor(mongoose){
+      
+        repository = new SiteRepository(mongoose)
+      
     }
     async findAll(req,res){
         try {
-            const site = await model.find({})
+            const site = await repository.find({})
             res.status(201).send({site});
         } catch (e) {
             console.log(e);
@@ -30,7 +24,7 @@ class SiteController{
     }
     // async getById(req,res){
     //     try {
-    //         const site = await model.findById(req.params.site._id);
+    //         const site = await repository.findById(req.params.site._id);
     //         res.status(201).send({site});
     //     } catch (e) {
     //         console.log(e);
@@ -41,7 +35,7 @@ class SiteController{
     // }
     async create(req, res){
       try{
-        const site = await model.create(req.body);
+        const site = await repository.create(req.body);
       
         res.status(201).send({message: "site cadastrado com sucesso",site});
         
@@ -55,7 +49,7 @@ class SiteController{
     }
     async update(req, res){
         try{
-             await model.update(req.params.id, {$set: req.body});
+             await repository.update(req.params.id, {$set: req.body});
              res.status(200).send({
                 message: 'site atualizado com sucesso!'
             });
@@ -69,7 +63,7 @@ class SiteController{
 
     async delete(req, res){
         try {
-            await model.findByIdAndRemove(req.params.id)
+            await repository.findByIdAndRemove(req.params.id)
             res.status(200).send({
                 message: 'site removido com sucesso!'
             });

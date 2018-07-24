@@ -1,13 +1,13 @@
 'use strict'
 
-const SiteController = require('../controllers/site-controller')
+const UsuarioController = require('../controllers/usuario-controller')
 
 
-class SiteRoute{
+class UsuarioRoute{
 
     constructor(app){
         
-        var controller = new SiteController(app.get('mongoose'));
+        var controller = new UsuarioController(app.get('mongoose'));
 
         app.get('/', controller.findAll);
         //app.get('/:id', controller.findById);
@@ -18,4 +18,4 @@ class SiteRoute{
       
     }
 }
-module.exports = SiteRoute;
+module.exports = UsuarioRoute;

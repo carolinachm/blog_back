@@ -10,16 +10,16 @@ mongoose.Promise = global.Promise;
 
 //importacao das model
 const Post = require('./models/post')
-const Autor = require('./models/autor')
+const Usuario = require('./models/usuario')
 const Site = require('./models/site')
 
 //importacao das controllers
 
 const PostController = require('./controllers/post-controller')
-const AutorController = require('./controllers/autor-controller')
+const UsuarioController = require('./controllers/usuario-controller')
 const SiteController = require('./controllers/site-controller')
 
-const PostRoute = require('./routes/post-route')
+
 
 
 class Server {
@@ -28,6 +28,8 @@ class Server {
         //instranciando a Express
         this.app = new Express();
 
+        this.router = Express.Router();
+
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({
             extended: false
@@ -35,6 +37,10 @@ class Server {
 
 
         this.app.use(Express.static('./uploads'))
+
+        this.app.use('/posts', this.router);
+        this.app.use('/sites', this.router);
+        this.app.use('/usuarios', this.router);
 
 
 
@@ -63,13 +69,13 @@ class Server {
 
         //instanciando a model
         new Post()
-        new Autor()
+        new Usuario()
         new Site()
         //instanciando a Controller
        
-        this.postRoute = new PostRoute(this.app);
-        this.autorRoute = new AutorPoute(this.app);
-        this.siteRoute = new SiteRoute(this.app);
+        this.postController = new PostController(this.app);
+        this.usuarioController = new UsuarioController(this.app);
+        this.siteController = new SiteController(this.app);
 
         this.app.listen(3000, () => {
             console.log('Example app listening on port 3000!');
