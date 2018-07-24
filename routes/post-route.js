@@ -44,7 +44,7 @@ class PostRoute{
         app.put('/:id', controller.update);
         app.delete('/:id', controller.delete);
 
-      
+        app.use('/posts', router);
     }
 }
 module.exports = PostRoute;

@@ -15,6 +15,8 @@ class UsuarioRoute{
         app.put('/:id', controller.update);
         app.delete('/:id', controller.delete);
 
+        app.use('/usuarios', route);
+
       
     }
 }

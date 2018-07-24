@@ -13,6 +13,12 @@ const Post = require('./models/post')
 const Usuario = require('./models/usuario')
 const Site = require('./models/site')
 
+// Carrega as Rotas
+
+const postRoute = require('./routes/post-route');
+const siteRoute = require('./routes/site-route');
+const usuarioRoute = require('./routes/usuario-route');
+
 //importacao das controllers
 
 const PostController = require('./controllers/post-controller')
@@ -38,9 +44,6 @@ class Server {
 
         this.app.use(Express.static('./uploads'))
 
-        this.app.use('/posts', this.router);
-        this.app.use('/sites', this.router);
-        this.app.use('/usuarios', this.router);
 
 
 
@@ -57,6 +60,9 @@ class Server {
             next();
         });
 
+        this.app.use('/posts', postRoute);
+        this.app.use('/sites', siteRoute);
+        this.app.use('/usuarios', usuarioRoute);
 
         // Connecting to the database
         mongoose.connect(dbConfig.url)
@@ -71,8 +77,10 @@ class Server {
         new Post()
         new Usuario()
         new Site()
-        //instanciando a Controller
+
        
+        //instanciando a Controller
+
         this.postController = new PostController(this.app);
         this.usuarioController = new UsuarioController(this.app);
         this.siteController = new SiteController(this.app);
