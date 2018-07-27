@@ -1,31 +1,41 @@
 'use strict'
 
-const Post = require ('../models/post');
+var Post
 
-class PostRepository{
+class Post{
 
-    constructor(postRepository){
-        this.postRepository = postRepository;
+    constructor(mongoose){
+        Post = mongoose.model('Post')
     }
 
     async findAll(){
-        const post = await this.postRepository.find({})
+        const post = await this.Post.find({})
         return post;
     }
     async findById(id){
-        const post = await this.postRepository.findById(id);
+        const post = await this.Post.findById(id);
         return post;
     }
     async create(data){
         var post = new Post(data);
-        const po = await this.postRepository.save({post:this.model});
+        const po = await this.Post.save();
         return po;
     }
     async update(id, data){
-        await findByIdAndUpdate(id,req.body)
+        await Post
+        .findByIdAndUpdate(id, {
+            $set: {
+                nome: data.nome,
+                
+            }
+        });
+
     }
-    async delete(id){
-        await findByIdAndRemove(id)
+    async delete(){
+        await Post
+        .findOneAndRemove(id);
+
+
     }
 }
-module.exports = PostRepository;
+module.exports = Post;

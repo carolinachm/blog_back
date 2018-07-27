@@ -42,9 +42,8 @@ class PostRoute{
         //app.get('/:id', controller.findById);
         app.post('/', upload.single('foto'),controller.create);
         app.put('/:id', controller.update);
-        app.delete('/:id', controller.delete);
-
-        app.use('/posts', router);
+        app.delete('/', controller.delete);
+  
     }
 }
 module.exports = PostRoute;

@@ -13,11 +13,8 @@ class UsuarioRoute{
         //app.get('/:id', controller.findById);
         app.post('/', controller.create);
         app.put('/:id', controller.update);
-        app.delete('/:id', controller.delete);
+        app.delete('/', controller.delete);
 
-        app.use('/usuarios', route);
-
-      
     }
 }
 module.exports = UsuarioRoute;

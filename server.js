@@ -14,10 +14,7 @@ const Usuario = require('./models/usuario')
 const Site = require('./models/site')
 
 // Carrega as Rotas
-
-const postRoute = require('./routes/post-route');
-const siteRoute = require('./routes/site-route');
-const usuarioRoute = require('./routes/usuario-route');
+const RouteLoader = require('./routes/RouteLoader')
 
 //importacao das controllers
 
@@ -35,6 +32,7 @@ class Server {
         this.app = new Express();
 
         this.router = Express.Router();
+       
 
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({
@@ -60,9 +58,7 @@ class Server {
             next();
         });
 
-        this.app.use('/posts', postRoute);
-        this.app.use('/sites', siteRoute);
-        this.app.use('/usuarios', usuarioRoute);
+ 
 
         // Connecting to the database
         mongoose.connect(dbConfig.url)
@@ -77,7 +73,13 @@ class Server {
         new Post()
         new Usuario()
         new Site()
+        
+        new RouteLoader(this.app)
 
+        this.app.use('/', router)
+        this.app.use('/posts', router);
+        this.app.use('/sites', router);
+        this.app.use('/usuarios', router);
        
         //instanciando a Controller
 
@@ -86,7 +88,7 @@ class Server {
         this.siteController = new SiteController(this.app);
 
         this.app.listen(3000, () => {
-            console.log('Example app listening on port 3000!');
+            console.log('Api rodando na port 3000!');
         });
 
     }
