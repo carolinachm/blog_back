@@ -6,13 +6,9 @@ var model;
 
 class AutorController{
 
-    constructor(app){
+    constructor(){
 
-        app.get('/autores', this.findAll);
-        // app.get('/autores/:_id', this.findById);
-        app.post('/autores', this.create);
-        app.put('/autores', this.update);
-        app.delete('/autores', this.delete);
+        
         
         model = mongoose.model('Autor');
 
