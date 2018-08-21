@@ -8,8 +8,8 @@ class Post extends mongoose.Schema{
         super({
             titulo: {type: String},
             resumo: {type: String},
-            dataPublicacao: {type: Date(), default: Date.now},
-            dataInclusao:{type: Date(), default: Date.now},
+            dataPublicacao: { type: Date , default: Date.now},
+            dataInclusao:{ type: Date , default: Date.now},
             cliques: {type: String},
             foto: {type: String},
             site: {
@@ -25,7 +25,7 @@ class Post extends mongoose.Schema{
         })
 
     
-        mongoose.model('Post', Post);
+        mongoose.model('Post',this);
     }
 }
 module.exports = Post;

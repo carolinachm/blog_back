@@ -1,6 +1,35 @@
 'use strict'
 const PostService = require('../service/PostService');
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/');
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    // reject a file
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
+
 class PostController{
   
     /* 1) Método: Selecionar Post (acessar em: GET http://localhost:3000/Posts */
@@ -29,9 +58,9 @@ class PostController{
     /* 2) Método: Criar Posts (acessar em: POST http://localhost:3000/Posts) */
     static async create(req, res){
         try {
-            
+            req.body.foto = req.file.path;
             let result = await PostService.create(req.body);
-           res.json(result);
+             res.json(result);
             
         } catch (e) {
             res.status(500).send('Falha ao processar sua requisição');

@@ -35,7 +35,7 @@ class App {
         });
         
         app.get('/', (req, res) => {
-            res.send("API ControlPec v0.0.1");
+            res.send("Blog v0.0.1");
         })
         
         

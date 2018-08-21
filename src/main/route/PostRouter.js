@@ -1,6 +1,9 @@
 'use strict'
 
 const PostController = require('../controller/PostController')
+const multer = require('multer');
+// cria uma instância do middleware configurada
+const upload = multer({ dest: 'uploads/' });
 
 class PostRouter{
 
@@ -8,11 +11,11 @@ class PostRouter{
 
         app.route('/posts')
         .get(PostController.findAll)
-        .post(PostController.create)
+        .post(upload.single('foto'),PostController.create)
         .put(PostController.update)
         .delete(PostController.remove);
         app.route('posts/:id')
-        .get(PostController.findById);
+        .get(PostController.getById);
     }
 }
 module.exports = PostRouter;

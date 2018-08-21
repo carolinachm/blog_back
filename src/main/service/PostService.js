@@ -5,7 +5,7 @@ const Post = mongoose.model('Post')
 
 class PostService{
 
-    static async find(obj){
+    static async findAll(obj){
         return await Post.find(obj);
     }
     static async getById(id){

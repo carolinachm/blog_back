@@ -6,10 +6,11 @@ class Usuario extends mongoose.Schema{
     constructor() {
 
         super({
-            nome: String
+            nome: {type:String},
+            senha:{type: String}
         })
         
-        mongoose.model('Usuario', Usuario)
+        mongoose.model('Usuario',this)
     }
 
 }

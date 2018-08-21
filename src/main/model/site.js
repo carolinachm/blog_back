@@ -10,7 +10,7 @@ class Site extends  mongoose.Schema{
                 url: String,
         })
         
-        mongoose.model('Site', Site);
+        mongoose.model('Site', this);
     }
 
 }
