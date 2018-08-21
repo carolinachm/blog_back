@@ -2,11 +2,11 @@
   "name": "blog_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": " src/main/App.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "dev": "lite-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon ",
+    "test": "mocha --timeout 10000",
+    "dev": "./node_modules/.bin/nodemon src/main/App.js"
   },
   "repository": {
     "type": "git",

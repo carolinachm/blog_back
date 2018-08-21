@@ -2,15 +2,15 @@
 
 const mongoose = require('mongoose');
 
-class Site {
+class Site extends  mongoose.Schema{
     constructor() {
-        mongoose.model('Site', {
-           
-                id: "",
-                nome: String,
+
+        super({
+            nome: String,
                 url: String,
-               
         })
+        
+        mongoose.model('Site', Site);
     }
 
 }

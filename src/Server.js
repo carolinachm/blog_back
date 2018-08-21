@@ -1,6 +1,5 @@
 "use strict";
 
-const App = require("../src/App");
 const debug = require("debug")
 const http = require("http");
 const Express = require("express");
@@ -8,18 +7,17 @@ const Express = require("express");
 class Server {
 
     constructor() {
+        
         this.app = new Express();
-        this.port = this.normalizePort(3000);
-        this.debug = debug('myexpress:server');
+        this.port = this.normalizePort(global.config.port);
+        this.debug = debug('controlpec:server');
+
         this.server = http.createServer(this.app);
         this.server.on('error', this.onError);
         this.server.on('listening', this.onListening.bind(this));
 
-        this.app.listen(this.port, () => {
-            console.log("API rodando na porta " + this.port);
-        });
+        return this.app;
 
-        new App(this.app);
     }
 
     normalizePort(val) {
@@ -35,7 +33,6 @@ class Server {
 
         return false
     }
-
 
     onError(error) {
         if (error.syscall !== 'listen') {
@@ -70,4 +67,4 @@ class Server {
     }
 }
 
-new Server();					
+module.exports = Server;
