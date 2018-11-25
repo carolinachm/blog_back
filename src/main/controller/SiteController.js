@@ -4,11 +4,12 @@ const SiteService = require('../service/SiteService');
 
 class SiteController{
 
-    static async findAll(req, res, next){
+    /* 1) Método: Selecionar Post (acessar em: GET http://localhost:3000/Posts */
+    static async findAll(req, res){
         try {
-            let result = await SiteService.find({});
-            res.json({message:'Consulta com sucesso'},result);
-        }catch (e) {
+            //Aqui estamos definindo a função que ira retornar todos Post do banco:
+            res.json(await SiteService.find({}))
+        } catch (e) {
             res.status(500).send('Falha ao processar sua requisição');
             global.logger.error(e.message);
         }
@@ -52,3 +53,4 @@ class SiteController{
         }
     }
 }
+module.exports = SiteController;

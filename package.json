@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/main/App.js",
   "scripts": {
-    "start": "./node_modules/.bin/nodemon src/main/App.js"
+    "start": "nodemon",
+    "test": "mocha --timeout 10000",
+    "dev": "./node_modules/.bin/nodemon src/main/App.js"
   },
   "repository": {
     "type": "git",
@@ -20,15 +22,21 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
+    "convict": "^4.4.0",
     "debug": "^3.1.0",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.2.2",
     "multer": "^1.3.1",
+    "mustache-express": "^1.2.8",
     "npm": "^6.1.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-jwt": "^4.0.0",
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "lite-server": "^2.4.0",
-    "nodemon": "^1.18.0"
+    "nodemon": "1.18.3"
   }
 }

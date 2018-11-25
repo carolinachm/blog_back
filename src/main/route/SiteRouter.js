@@ -13,5 +13,7 @@ class SiteRouter{
         app.route('sites/:id')
             .get(SiteController.getById);
     }
+
+    
 }
 module.exports = SiteRouter;

@@ -10,7 +10,7 @@ class Server {
         
         this.app = new Express();
         this.port = this.normalizePort(global.config.port);
-        this.debug = debug('controlpec:server');
+        this.debug = debug('blog:server');
 
         this.server = http.createServer(this.app);
         this.server.on('error', this.onError);
