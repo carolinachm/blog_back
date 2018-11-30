@@ -51,9 +51,9 @@ class Config{
                     }
                 }
             }
-        },
+        }
         
-        config.validate();
+        // config.validate();
         }
     
        

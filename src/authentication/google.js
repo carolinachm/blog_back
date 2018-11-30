@@ -1,6 +1,6 @@
 const passport = require('passport');
 const passportGoogle = require('passport-google-oauth');
-const config = require('../config');
+const config = require('../../config');
 const UsuarioController = require('../main/controller/UsuarioController')
 
 const passportConfig = {
