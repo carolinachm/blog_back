@@ -1,34 +1,19 @@
 {
   "name": "blog_api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Blog usando Nodejs no backend e Reactt no frontend e futuramente usando os serviços do Watson",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "dev": "lite-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/carolinachm/blog_api.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Carolina Mesquita",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/carolinachm/blog_api/issues"
   },
-  "homepage": "https://github.com/carolinachm/blog_api#readme",
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "express": "^4.16.3",
-    "mongoose": "^5.2.2",
-    "multer": "^1.3.1",
-    "npm": "^6.1.0",
-    "path": "^0.12.7"
-  },
-  "devDependencies": {
-    "lite-server": "^2.4.0",
-    "nodemon": "^1.18.0"
-  }
+  "homepage": "https://github.com/carolinachm/blog_api#readme"
 }
